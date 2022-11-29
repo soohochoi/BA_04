@@ -19,7 +19,7 @@ Ensemble Learning 이란 여러 개의 분류기(Classifier)를 생성하고 그
 * Bias(편향): 반복적인 모델 학습 시 평균적으로 얼마나 정확한 추정이 가능한지에 대한 측정 지표
 * variance(분산): 반복적인 모델 학습 시 개별추정이 얼마나 차이가 크게 나타나는지에 대한 측정 지표
 조금더 편향과 분산이 무엇인지 알아보겠습니다. 
-<p align="center"><img width="500" alt="image" src="https://user-images.githubusercontent.com/97882448/204585361-54b5403a-5420-4b75-a565-396f572b7acf.png">
+<p align="center"><img width="485" alt="image" src="https://user-images.githubusercontent.com/97882448/204589240-dad55a14-d4f4-480c-897f-5ea4c78221a4.png">
 
 위에 그림에서 4사분면부터 보면 편향과 분산이 둘 다 높은 것을 볼 수 있음 이것은 이것은 도태된 모델이라고 할 수 있습니다.
 3사분면은 편향은 높지만 분산은 낮은 경우를 말합니다. 예를 들어 logistic regression이나  K-nn에서 K가 클 때를 말합니다. 2사분면은 편향은 낮지만 분산은 높은 경우립니다. 예를 들어 Decision Tree나  K-nn에서 K가 작을 때를 말합니다. 이토록 현실에선 3사분면과 2사분면 같은 모델이 대부분입니다. 따라서 1사분면같이 편향과 분산이 둘 다 낮아야 좋은 모델을 충족시키기 위해 Ensemble방식이 제안되어집니다. 2사분면의 분산을 줄여줘서 1사분면처럼 만드는 방식이 Bagging이고 3사분면의 편향을 줄여줘서 1사분면처럼 만드는 방식이 Boosting입니다. 
