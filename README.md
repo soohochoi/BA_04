@@ -324,3 +324,13 @@ evaluate_model(tune_xg)
 <p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/97882448/204909417-9e34b6b8-03ed-4e90-8bee-2c3e9c45e1b9.png">
 
 AUC말고도 시각적으로 feature importance등 다양한 평가지표를 알수 있음
+
+- ### 결론
+  
+여기서 사용한 데이터셋은 imblance 하기에 높은 정확도(accuracy)만 보면 좋은 모델이라고 착각할수 있지만 낮은 재현률(recall)과 정밀도(precision)를 보임
+recall과 precision을 개선하기 위한 것으로는 다른 이상치탐지방법이나 AE의 구조를 바꿔보면 좋을것 같음 
+  
+---
+ ### Reference
+ 1. https://sustaining-starflower-aff.notion.site/2022-2-0e068bff3023401fa9fa13e96c0269d7 <강필성교수님 자료>
+ 2. https://medium.com/@curiousily/credit-card-fraud-detection-using-autoencoders-in-keras-tensorflow-for-hackers-part-vii-20e0c85301bd <Credit Card Fraud Detection using Autoencoders in Keras >
