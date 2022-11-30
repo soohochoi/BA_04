@@ -262,4 +262,65 @@ xgb_model.feature_importances_
 #array([0.55401623, 0.33119002, 0.11479378]
 ```
 RF와 달리 XGboost는 나이가 연수입보다 차를 가지고있는 것에 중요한 지표임
-- #### pycaret
+- #### pycaret_RF
+```python
+#pycaret은 파이썬 버전에 되게 민감함, 따라서 가상환경을 통해 버전을 3.8로 맞춰 준후 !pip install pycaret으로 설치해주어여함
+from pycaret.classification import *
+#import sys로는 현재 파이썬 버전을 알수 있음
+import sys
+print(sys.version)
+```
+pycaret은 파이썬 버전에 되게 민감함, 따라서 가상환경을 통해 버전을 3.8로 맞춘다음에 !pip install pycaret으로 설치해주어여합니다.
+```python
+clf = setup(data = df_final, train_size=0.7, target='Purchased',numeric_features=['Gender_Male','AnnualSalary','Age'],session_id = 31)
+best=compare_models()
+```
+clf를 통해 trainsize를 맞추어주고 예측변수인 구입여부를 설정한후에 성별(위에서 코딩을 통해 숫자형으로 바꿔줌),연간수입,나이를 숫자형변수로 설정하였습니다. 후에 best=compare_models()을 통해 가능한 classification에서 best model을 찾으면 아래와 같이 그림이 나옵니다. 노란색은 가장 성능이 좋은것을 뜻합니다. 
+<p align="center"><img width="500" alt="image" src="https://user-images.githubusercontent.com/97882448/204904405-71b46631-e8f2-476c-9959-a8d70a1a0039.png">
+
+```python
+rf = create_model('rf', fold=5)
+```
+
+우리가 비교하고자한것은 RF이니 fold를 5로 설정해서 성능을 확인해봅니다. 
+
+<p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/97882448/204904688-a0912c2d-de5e-45fe-9920-a3adb6eeeb77.png">
+
+randomforestclassfier()를 사용했을때보다  Mean of Accuracy : 0.8957142857142857 가 조금감소 되었고 표준편차는 Standard Deviation of Accuracy : 0.040304959941902536와 비교했을때 Auto ML이 더 작음을 알수 있습니다. 
+
+```python
+tune_rf=tune_model(rf,fold=5,optimize="Accuracy")
+#그리드 서치를 한것처럼 Accuracy를 목적으로 tuning을 한번 시켜봄
+```
+<p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/97882448/204905815-bf8f896b-b238-4e98-afd0-98cf3d11da16.png">
+
+Auto ML로 튜닝한것은 0.9084로 grid search한 0.9042보다 성능이 능가하진 못했음
+```python
+evaluate_model(tune_rf)
+#마지막으로 모델을 평가하는 단계임 
+```
+<p align="center"><img width="600" alt="image" src="https://user-images.githubusercontent.com/97882448/204907314-19c43a9c-40b2-48b9-b645-372d04c8d400.png">
+
+AUC말고도 시각적으로 feature importance등 다양한 평가지표를 알수 있음
+- #### pycaret_XGboost
+```python
+xgboost = create_model('xgboost', fold=5)
+```
+<p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/97882448/204908152-10caaa89-26fb-4eb1-8013-0b09970e0ddc.png">
+
+XGboost의 정확도가 88.66정도나오는데 Auto ML이 0.8884로 더 좋게나왔음 
+
+```python
+#xgbclassifier()처럼 AUC를 목적함수로 모델을 튜닝하였음
+tune_xg=tune_model(xgboost,fold=5,optimize='AUC' )
+```
+<p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/97882448/204909568-ab4f2016-a798-4ece-a81a-5c97650562c4.png">
+
+xgbclassifier()에서 튜닝한 auc의 best_score가 0.954가 나왔는데 0.957로 AutoML이 조금더 좋게나왔음 
+
+```python
+evaluate_model(tune_xg)
+```
+<p align="center"><img width="600" alt="image" src="https://user-images.githubusercontent.com/97882448/204909417-9e34b6b8-03ed-4e90-8bee-2c3e9c45e1b9.png">
+
+AUC말고도 시각적으로 feature importance등 다양한 평가지표를 알수 있음
