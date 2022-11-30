@@ -3,8 +3,17 @@
 <p align="center"><img width="604" alt="image" src="https://user-images.githubusercontent.com/97882448/204542304-85e7f83d-075c-4d02-b5e8-6e8d77d66987.png">
 
 이자료는 고려대학교 비니지스 애널리틱스 강필성교수님께 배운 Ensemble Learning(Bagging & Boosting)을 바탕으로 만들어졌습니다.
-먼저, Ensemble Learning(Bagging & Boosting)방식의 기본적인 개념을 배운후에 Bagging에선 Random Forest,Boosting에선 XG Boost에 대해 개념 및 코드를 통해 직접 구현을 해봄으로써 이해를 돕도록하겠습니다. 또한 Auto ML과의 성능차이 및 시간차이를 통해 간단한 실험을 해보겠습니다.
+먼저, Ensemble Learning(Bagging & Boosting)방식의 기본적인 개념을 배운후에 Bagging에선 Random Forest,Boosting에선 XG Boost에 대해 개념 및 코드를 통해 직접 구현을 해봄으로써 이해를 돕도록하겠습니다. 또한 Auto ML과의 성능차이를 비교해 보며 간단한 실험을 해보겠습니다.
 
+## 목차
+### 1. [BA_04 Ensemble Learning_개념설명](#ba_04-ensemble-learning_개념설명)
+### 2. [Bagging_Random Forest(RF) 개념설명](#bagging_random-forestrf-개념설명)
+### 3. [Boosting_XGboost(xgb) 개념설명](#boosting_xgboostxgb-개념설명)
+### 4. [Ensemble Learning에서 Random_forest와 XG boost 실습코드](#ensemble-learning에서-random_forest와-xg-boost-실습코드)
+  #### 4.1. [데이터 셋 소개](#데이터-셋-소개)
+  #### 4.2. [코드설명](#코드설명)
+  #### 4.3. [결론](#결론)
+  
 ## BA_04 Ensemble Learning_개념설명
 Ensemble Learning 이란 여러 개의 분류기(Classifier)를 생성하고 그 예측을 결합함으로써 보다 정확한 예측을 도출하는 기법을 말합니다. 그러면 왜? 이 앙상블 러닝을 사용하는지 궁금하실수 있습니다.  이유는 먼저 하나의 Single 모델이 모든 데이터셋에서 우수하지 않습니다.  그래서 여러 다양한 학습 알고리즘들을 결합하여 학습시키는 방법을 고안하였습니다. 따라서 예측력의 보완되고  각각의 알고리즘을 single로 사용할 경우 나타나는 단점들을 보완되어집니다. 쉽게 말해서 옛 속담에 백지장도 맞들면 낫다와 같이 집단 지성을 이용하는 방법입니다.
 그러면 궁금증이 많은 몇분께서는 어떻게 증명할건데? 라고 하실겁니다. 먼저는 아래 그림처럼 논문에서 실제 데이터셋에 대하여 증명이 되었습니다. 
@@ -53,7 +62,7 @@ XGBoost는 의사결정나무의 Boosting기반 모델로써 Extreme Gradient Bo
     - 표준 GBM 경우 과적합 규제기능이 없으나, XGBoost는 자체적으로 규제기능이 있음
     - 분류와 회귀영역에서 뛰어난 예측 성능 발휘
   
-## Ensemble Learning에사 Random_forest와 XG boost 실습코드
+## Ensemble Learning에서 Random_forest와 XG boost 실습코드
 
 - ### 데이터 셋 소개
   
@@ -326,11 +335,10 @@ evaluate_model(tune_xg)
 AUC말고도 시각적으로 feature importance등 다양한 평가지표를 알수 있음
 
 - ### 결론
-  
-여기서 사용한 데이터셋은 imblance 하기에 높은 정확도(accuracy)만 보면 좋은 모델이라고 착각할수 있지만 낮은 재현률(recall)과 정밀도(precision)를 보임
-recall과 precision을 개선하기 위한 것으로는 다른 이상치탐지방법이나 AE의 구조를 바꿔보면 좋을것 같음 
+ 
+sklearn과 AutoML에 관하여 모델의 기본 성능과 조그만한 하이퍼 파라미터 튜닝 했을때의 결과를 알고 싶었다. 예상하기에는 Auto ML(pycaret)이 sklearn기반이니 sklearn으로 RF와 XGboost를 예측한것과 별반차이가 없으나 AutoML이 더 좋지 않을것이다.라고 생각했지만 XGboost같은 경우에는  AutoML로 만든 XGboost가 성능이 더 좋았다. 그러니 데이터셋이 간단하고 전처리가 되어있는 깔끔한 classification문제이고 주어진 시간이 촉박한 경우는 Auto ML을 사용하는것이 괜찮은 방법같기도하다. 왜냐면 evaluation을 통해 시각적으로 훌륭한 자료를 많이 주기때문이다. 단, 연구를 할때에는 Auto ML은 어떤 모델이 성능이 좋게 나오는지 확인용 초반에만 사용하고 sklearn을 통한 앙상블 모델을 통해 세세히 하이퍼 파라미터를 바꾸어주는것이 좋겠다.  또한 RF와 XGboost를 통해 Feature importance를 뽑아 보았을때  RF일때는 차의 유무가 연간수입이 나이보다 중요도가 높았고 XGboost에서 차의 유무는 나이가 연간수입보다 중요도가 높았다. 성별은 RF와 XGboost 둘다 차의 유무에 중요한 변수가 되지 못했다. 
   
 ---
  ### Reference
  1. https://sustaining-starflower-aff.notion.site/2022-2-0e068bff3023401fa9fa13e96c0269d7 <강필성교수님 자료>
- 2. https://medium.com/@curiousily/credit-card-fraud-detection-using-autoencoders-in-keras-tensorflow-for-hackers-part-vii-20e0c85301bd <Credit Card Fraud Detection using Autoencoders in Keras >
+ 2. https://www.kaggle.com/datasets/gabrielsantello/cars-purchase-decision-dataset <CCars - Purchase Decision Dataset>
