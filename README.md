@@ -345,4 +345,4 @@ sklearn과 AutoML에 관하여 모델의 기본 성능과 조그만한 하이퍼
 ---
  ### Reference
  1. https://sustaining-starflower-aff.notion.site/2022-2-0e068bff3023401fa9fa13e96c0269d7 <강필성교수님 자료>
- 2. https://www.kaggle.com/datasets/gabrielsantello/cars-purchase-decision-dataset <CCars - Purchase Decision Dataset>
+ 2. https://www.kaggle.com/datasets/gabrielsantello/cars-purchase-decision-dataset <Cars - Purchase Decision Dataset>
