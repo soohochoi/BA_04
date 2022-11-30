@@ -214,6 +214,12 @@ print(best_result)
 ```
 
 그리드 서치를 진행한 결과 모델이 튜닝이 되어서 accuracy가 0.9042로 올라간것을 볼수 있음
+```python
+rf.feature_importances_
+#첫번째부터 나열하면 나이,연수입,성별의 중요도
+#array([0.48425947, 0.50592673, 0.0098138 ])
+```
+feature impotance는 나이보다 연수입이 차를 가지고 있는것에 더 중요한 부분을 차지함
 
 - #### XGboost
 ```python 
@@ -250,5 +256,10 @@ print('best_score:', grid.best_score_)
 #best_score: 0.9546021731220089
 ```
 그리드 서치를 진행한 결과 모델이 튜닝이 되어서 roc_auc가 0.954 올라간것을 볼수 있음
-
+```python 
+xgb_model.feature_importances_
+#첫번째부터 나열하면 나이,연수입,성별의 중요도
+#array([0.55401623, 0.33119002, 0.11479378]
+```
+RF와 달리 XGboost는 나이가 연수입보다 차를 가지고있는 것에 중요한 지표임
 - #### pycaret
