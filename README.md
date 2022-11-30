@@ -98,3 +98,156 @@ df.info()
 <p align="center"><img width="361" alt="image" src="https://user-images.githubusercontent.com/97882448/204887847-3a058982-1961-44d9-bcaf-b6b93012dc16.png">
 
 데이터셋의 정보가 나오면서 UserID, 성별, 나이, 연수입과 차의 구입 여부(차를 구입하였으면 1, 아니면 0)의 대한 데이터셋이 구성됨
+
+```python
+#성별과 년수입의의 histplot을 본다. 
+sns.histplot(x='AnnualSalary', data=df, hue='Gender', bins=20, multiple="dodge", shrink=.8)
+```
+<p align="center"><img width="500" alt="image" src="https://user-images.githubusercontent.com/97882448/204888370-d9a55d1f-821a-4e06-80cf-986254fafe72.png">
+
+성별과 년수입의의 histplot을 본다. 남자보다 여성이 년수입이 더 많은 데이터라는것을 알수 있다. 
+
+```python
+#나이와 성별의 histplot을 본다.
+sns.histplot(x='Age', data=df, hue='Gender', bins=20, multiple="dodge", shrink=.8)
+```
+<p align="center"><img width="500" alt="image" src="https://user-images.githubusercontent.com/97882448/204888975-b9dd2340-86e2-4267-9001-73a1d35a60aa.png">
+  
+```python
+#차의 구입과 년수입의의 histplot을 본다.
+sns.histplot(x='AnnualSalary', data=df, hue='Purchased', bins=20, multiple="dodge", shrink=.8)
+```
+<p align="center"><img width="500" alt="image" src="https://user-images.githubusercontent.com/97882448/204889130-1c8dac0a-bbb6-400b-a3ca-a3f62aa8b36d.png">
+
+```python
+plt.style.use("default")
+sns.pairplot(df)
+#데이터간의 선형관계가 있는지 확인해봄
+```
+<p align="center"><img width="529" alt="image" src="https://user-images.githubusercontent.com/97882448/204889341-acfbde3f-2b07-43a6-ac2c-fa9eebebef09.png">
+  
+pairplot을 확인해보며 데이터 간에 선형관계가 있는지 아무 관계가 없어 보이는지 시각적으로 감을 잡을수있다.
+
+```python
+#annot은 각 cell값의 값의 표기유무임 cmap은 Heatmap의 색을 표시해줌
+sns.heatmap(df.corr(), annot=True, cmap='Blues',linewidths=0.5)
+```
+<p align="center"><img width="427" alt="image" src="https://user-images.githubusercontent.com/97882448/204889720-43309e91-ac2e-473b-ad5f-c4936270c81e.png">
+
+annot은 각 cell안의 값의 표기유무이고 cmap은 Heatmap의 색을 표시해주는데 내용의 통일성을 위해 파란색의 heatmap으로 설정하였음. 데이터간의 배열을 색을 이용하여 표현한 그래프입니다.
+
+```python
+categorical = ["Gender"] # 위 데이터에서 gender만 categorical 데이터이다.
+#categorical변수를 get_dummy를 통해 수치형변수로 바꿔준다.
+df_final = pd.get_dummies(df, columns = categorical, drop_first = True)
+df_final
+```
+<p align="center"><img width="314" alt="image" src="https://user-images.githubusercontent.com/97882448/204890824-ac5fcdd3-293c-40ba-8d35-59a6fd827cd7.png">
+  
+gender를 categorical로 설정 후 에 get_dummy를 통해 numurical로 바꾸줌 그럼 아래와 같이 데이터 프레임이 완성됨
+  
+```python
+X = df_final.drop('Purchased', axis=1)
+y = df_final['Purchased']
+X_train, X_test, y_train, y_test =  train_test_split(X,y,test_size = 0.3, random_state= 42)
+```
+sklearn을 통해 train:test=7:3으로 나누어졌음
+
+- #### Random forest
+```python
+#Random forest시작
+rf = RandomForestClassifier(random_state = 31)
+all_accuracies = cross_val_score(estimator = rf, X = X_train, y = y_train, cv = 5)
+print(all_accuracies)
+#[0.94285714 0.85714286 0.85       0.88571429 0.94285714]
+print (f"Mean of Accuracy : {all_accuracies.mean()}") # Average of all accuracies
+print (f"Standard Deviation of Accuracy : {all_accuracies.std()}") # Standard Deviation of all accuracies
+#Mean of Accuracy : 0.8957142857142857
+#Standard Deviation of Accuracy : 0.040304959941902536
+```
+랜덤 포레스트를 돌리고 Randomstate는 31로 설정한후에 cross_validation은 5로 설정하였다. 결과는 #[0.94285714 0.85714286 0.85       0.88571429 0.94285714]로 나왔고 정확도 기준으로 정확도의 평균과 정확도의 표준편차를 구하였다. 이 지표는 나중에 Auto ML인 pycaret과 비교해볼것이다. 
+
+```python
+# 랜덤포레스트 나무의 수
+n_estimators = [int(x) for x in np.linspace(start = 10, stop = 80, num = 10)]
+# 모든 스플릿마다 변수의 갯수를 고려하는지
+max_features = ["auto", "sqrt"]
+# 나무의 최대 깊이
+max_depth = [2, 4]
+# 노드를 분할하는 데 필요한 최소 샘플 수
+min_samples_split = [2, 5]
+# 각 잎 노드에 필요한 최소 샘플 수
+min_samples_leaf = [1, 2]
+# bootstrap을 할건지 말건지
+bootstrap = [True, False]
+```
+그리드 서치에 필요한 hyper-parameter의 범위를 설정해줌
+```python
+# 파라미터 그리드 생성
+param_grid = {"n_estimators": n_estimators,
+               "max_features": max_features,
+               "max_depth": max_depth,
+               "min_samples_split": min_samples_split,
+               "min_samples_leaf": min_samples_leaf,
+               "bootstrap": bootstrap}
+
+print(param_grid)
+#{'n_estimators': [10, 17, 25, 33, 41, 48, 56, 64, 72, 80], 'max_features': ['auto', 'sqrt'], 'max_depth': [2, 4], 'min_samples_split': [2, 5], 'min_samples_leaf': [1, 2], 'bootstrap': [True, False]}
+```
+```python
+from sklearn.model_selection import GridSearchCV
+#그리드서치로 모델 튜닝이 진행 서치의 목적함수는 accuracy이고 n_jobs=-1은 모든 코어를 사용하겠다는 뜻임
+rf_Grid = GridSearchCV(estimator = rf, param_grid = param_grid, cv = 5, scoring = "accuracy", n_jobs = -1)
+rf_Grid.fit(X_train, y_train)
+```
+그리드서치를 통해 모델 튜닝이 진행 서치의 목적함수는 accuracy이고 n_jobs=-1은 모든 코어를 사용하겠다는 뜻임
+```python
+  #최소의 파라미터 추출하기
+rf_Grid.best_params_
+```
+<p align="center"><img width="300" alt="image" src="https://user-images.githubusercontent.com/97882448/204895466-983d2bea-b2ae-4b26-b170-563e5688c131.png">
+
+```python
+best_result = rf_Grid.best_score_
+print(best_result)
+#0.9042857142857142
+```
+
+그리드 서치를 진행한 결과 모델이 튜닝이 되어서 accuracy가 0.9042로 올라간것을 볼수 있음
+
+- #### XGboost
+```python 
+#xgb
+xgb_model = XGBClassifier()
+xgb_model.fit(X_train, y_train)
+```
+<p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/97882448/204897199-a893c274-3b4c-4132-8b29-5c0a3420cd68.png">
+
+xgboost 모델정의하고 학습시키기
+  
+```python 
+y_pred = xgb_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred) * 100
+print("Accuracy of the XG_boost_Model: ",accuracy)
+#Accuracy of the XG_boost_Model:  88.66666666666667
+```
+XGboost의 정확도가 88.66정도나옴
+```python 
+param_grid = {
+    'model__max_depth': [2, 3, 5, 7, 10],
+    'model__n_estimators': [10, 100, 500],
+}
+
+grid = GridSearchCV(xgb_model, param_grid, cv = 5, n_jobs = -1, scoring = 'roc_auc')
+grid.fit(X_train, y_train) 
+```
+RF와 마찬가지로 grid_search이지만 scoring 내가 관심있는 지표가 이번엔 roc_auc를 구하기로 하였음
+  
+```python 
+print('best_param:', grid.best_params_)
+print('best_score:', grid.best_score_)
+#best_param: {'model__max_depth': 2, 'model__n_estimators': 10}
+#best_score: 0.9546021731220089
+```
+그리드 서치를 진행한 결과 모델이 튜닝이 되어서 roc_auc가 0.954 올라간것을 볼수 있음
+
