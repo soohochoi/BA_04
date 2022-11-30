@@ -299,7 +299,7 @@ Auto ML로 튜닝한것은 0.9084로 grid search한 0.9042보다 성능이 능�
 evaluate_model(tune_rf)
 #마지막으로 모델을 평가하는 단계임 
 ```
-<p align="center"><img width="600" alt="image" src="https://user-images.githubusercontent.com/97882448/204907314-19c43a9c-40b2-48b9-b645-372d04c8d400.png">
+<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/97882448/204907314-19c43a9c-40b2-48b9-b645-372d04c8d400.png">
 
 AUC말고도 시각적으로 feature importance등 다양한 평가지표를 알수 있음
 - #### pycaret_XGboost
@@ -321,6 +321,6 @@ xgbclassifier()에서 튜닝한 auc의 best_score가 0.954가 나왔는데 0.957
 ```python
 evaluate_model(tune_xg)
 ```
-<p align="center"><img width="600" alt="image" src="https://user-images.githubusercontent.com/97882448/204909417-9e34b6b8-03ed-4e90-8bee-2c3e9c45e1b9.png">
+<p align="center"><img width="800" alt="image" src="https://user-images.githubusercontent.com/97882448/204909417-9e34b6b8-03ed-4e90-8bee-2c3e9c45e1b9.png">
 
 AUC말고도 시각적으로 feature importance등 다양한 평가지표를 알수 있음
