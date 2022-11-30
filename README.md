@@ -221,7 +221,7 @@ print(best_result)
 xgb_model = XGBClassifier()
 xgb_model.fit(X_train, y_train)
 ```
-<p align="center"><img width="400" alt="image" src="https://user-images.githubusercontent.com/97882448/204897199-a893c274-3b4c-4132-8b29-5c0a3420cd68.png">
+<p align="center"><img width="500" alt="image" src="https://user-images.githubusercontent.com/97882448/204897199-a893c274-3b4c-4132-8b29-5c0a3420cd68.png">
 
 xgboost 모델정의하고 학습시키기
   
@@ -251,3 +251,4 @@ print('best_score:', grid.best_score_)
 ```
 그리드 서치를 진행한 결과 모델이 튜닝이 되어서 roc_auc가 0.954 올라간것을 볼수 있음
 
+- #### pycaret
