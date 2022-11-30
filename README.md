@@ -53,6 +53,10 @@ XGBoost는 의사결정나무의 Boosting기반 모델로써 Extreme Gradient Bo
     - 표준 GBM 경우 과적합 규제기능이 없으나, XGBoost는 자체적으로 규제기능이 있음
     - 분류와 회귀영역에서 뛰어난 예측 성능 발휘
   
+## Ensemble Learning에사 Random_forest와 XG boost 실습코드
+
+### 데이터 
+
 
 
   
