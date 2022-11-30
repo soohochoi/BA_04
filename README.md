@@ -55,9 +55,46 @@ XGBoost는 의사결정나무의 Boosting기반 모델로써 Extreme Gradient Bo
   
 ## Ensemble Learning에사 Random_forest와 XG boost 실습코드
 
-### 데이터 셋 소개
+- ### 데이터 셋 소개
   
-이번 데이터 셋은 차 구입에 대한 데이터로 변수도 성별, 나이,연간수익,차의 여부가 끝인 되게 간단한 데이터 셋이며 클라이언트의 성별, 나이, 연간수익을 보고 자동차를 구입했는지 여부를 예측하는 분류문제이다. 
-이전 데이터는 
+<p align="center"><<img width="357" alt="image" src="https://user-images.githubusercontent.com/97882448/204886022-b8e1104d-a86b-4958-bf5c-7eb1ca55d9be.png">
+  
+이번 데이터 셋은 차 구입에 대한 데이터로 변수도 성별, 나이,연간수익,차의 여부가 끝인 되게 간단한 데이터 셋이며 유저의 성별, 나이, 연간수익을 보고 자동차를 구입했는지 여부를 예측하는 분류문제이다. 
+이전 데이터와 달리 이번 데이터는 상당히 간단한것을 알수있는데 선정이유는 2가지였다. 
+  
+첫번째는 과연 다른 지표에 비해 일상생활에서 쉽게 알수 있는 지표들(물론 연간수익을 공개하기는 쉽지 않은 문제일수도 있지만?)로 얼마나 예측을 정확히 할수 있을까?가 궁금했고 두번째는 살다보면 급하게 데이터를 처리해야 할일이 생기는데 순수한 궁금증으로 Auto ML로 알려진 pycaret과 비교했을때 hyper-parameter를 얼마나 잘 찾아주는지가 궁금하였다.
+- ### 코드설명
 
-  
+```python
+# 필요한 모듈 부르기
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import PCA
+import xgboost as xgb
+from xgboost import XGBClassifier
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+%matplotlib inline
+```
+필요한 모듈을 불러온다.
+```python
+df = pd.read_csv("car_data.csv")
+#데이터의 머리부분 추출
+df.head(5)
+```
+```python
+df.info()
+#데이터셋은 가장 간단한 UserID, 성별인 Gender, 나이, 연수입과 구입 여부(차를 구입하였으면 1, 아니면 0으로 정리하였음)
+```
+<p align="center"><img width="361" alt="image" src="https://user-images.githubusercontent.com/97882448/204887847-3a058982-1961-44d9-bcaf-b6b93012dc16.png">
+
+데이터셋의 정보가 나오면서 UserID, 성별, 나이, 연수입과 차의 구입 여부(차를 구입하였으면 1, 아니면 0)의 대한 데이터셋이 구성됨
