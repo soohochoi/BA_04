@@ -28,6 +28,31 @@ Ensemble Learning 이란 여러 개의 분류기(Classifier)를 생성하고 그
 ## Bagging_Random Forest(RF) 개념설명
 <p align="center"><img width="600" alt="image" src="https://user-images.githubusercontent.com/97882448/204602601-e8a93bc9-dcc6-4438-b744-81bf63fa97d7.png">
 
-RF는 의사 결정 나무를 사용하는 배깅(Bagging)의 특수한 형태입니다.
-다수의 나무가 모여서 forest을 이루어 랜덤포레스트라고 불립니다.
-원래 의사결정 나무는 결정 경계를 탐색할 때 모든 변수를 고려하여 분기점을 찾지만 Random forest는 이 중 일부의 변수만을 랜덤하게 선택하여 분기점을 찾습니다. 그러면 이글을 읽는 사람은 반문할수 있을겁니다.  Random하게 선택된 변수는 전체변수를 고려 하는 것 보다 의사 결정 나무의 성능이 떨어질 수 밖에 없는데 어떻게 앙상블 방식이 좋은 성능이 나올수 있니? 라고요. 하지만 다양성이 고려되고 매번 다른 특성을 고려하기 때문에 훨씬 더 다양한 모델을 만들 수 있습니다. 
+RF는 의사 결정 나무를 사용하는 배깅(Bagging)의 특수한 형태입니다.다수의 나무가 모여서 forest을 이루어 랜덤포레스트라고 불립니다.
+원래 의사결정 나무는 결정 경계를 탐색할 때 모든 변수를 고려하여 분기점을 찾지만 Random forest는 이 중 일부의 변수만을 랜덤하게 선택하여 분기점을 찾습니다. 그러면 이글을 읽는 사람은 반문할수 있을겁니다. Random하게 선택된 변수는 전체변수를 고려 하는 것 보다 의사 결정 나무의 성능이 떨어질 수 밖에 없는데 어떻게 앙상블 방식이 좋은 성능이 나올수 있니? 라고요. 하지만 다양성이 고려되고 매번 다른 특성을 고려하기 때문에 훨씬 더 다양한 모델을 만들 수 있습니다. 이러한 RF의 장점과 단점은 아래와 같습니다. 
+
+- Random Forest의 장점 
+    - Classification 및 Regression 문제에 모두 사용 가능
+    - 대용량 데이터 처리에 효과적
+    - 과대적합 문제 최소화하여 모델의 정확도 향상
+    - Classification 모델에서 상대적으로 중요한 변수를 선정 및 Ranking 가능
+- Random Forest의 단점 
+    - 랜덤 포레스트 특성상 데이터 크기에 비례해서 수백개에서 수천개의 트리를 형성하기에 예측에 오랜 프로세스 시간이 걸림
+    - 랜덤 포레스트 모델 특성상 생성하는 모든 트리 모델을 다 확인하기 어렵기에 해석 가능성이 떨어질수도 있음
+
+## Boosting_XGboost(xgb) 개념설명
+<p align="center"><img width="700" alt="image" src="https://user-images.githubusercontent.com/97882448/204880494-8e40ed4e-dd62-4dc6-8481-234fc1d418ff.png">
+
+XGBoost는 의사결정나무의 Boosting기반 모델로써 Extreme Gradient Boosting이 원어이다. 효율성과 유연성이 뛰어나며 Gradient Boosting framework의 뿌리에서 나왔다. 또한 여러 하이퍼 파라미터를 조절해가면서 최적의 Model을 만들 수 있고 Over fitting(과적합)을 방지할 수 있다. 자원이 많아도 빠르게 학습및 예측이 가능한것도 장점이며 효율적인 결측치 데이터 처리와 Cross validation을 지원하는 특징들이 있다.
+  
+구조를 조금더 자세히 이야기하자면 병렬화된 tree 구조 생성한다. XGBoost는 block라고 부르는 곳에 데이터를 저장하는데 각 block의  데이터는  compressed column(CSC) format으로 저장되며, 각 칼럼은 해당 변수 값을 정렬한 상태로 저장된다. 보통 다른 알고리즘은 정렬 정보 보존이 안되는데 이 부분은 XG boost가 시간을 보존하는 방법이다. 또한 깊이 우선탐색을 통한 분기점 생성한다. 좌측에서 부터 우측으로 변수 값이 오름차순으로 정렬되어 있다고 가정하면 전체 데이터를 균등하게 분할하고 각 분할에 대해 개별적으로 계산하여 최적의 Split을 찾는다. 
+
+- XGBoost의 장점
+    - Gradient Boosting에 비해 속도가 빠름
+    - hyper-parameter를 조절할수 있음
+    - 표준 GBM 경우 과적합 규제기능이 없으나, XGBoost는 자체적으로 규제기능이 있음
+    - 분류와 회귀영역에서 뛰어난 예측 성능 발휘
+  
+
+
+  
