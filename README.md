@@ -12,7 +12,7 @@
 ### 4. [Ensemble Learning에서 Random_forest와 XG boost 실습코드](#ensemble-learning에서-random_forest와-xg-boost-실습코드)
   #### 4.1. [데이터 셋 소개](#데이터-셋-소개)
   #### 4.2. [코드설명](#코드설명)
-  #### 4.2.1 [random-forest](#random-forest)
+  #### 4.2.1 [Random-Forest](#random-forest)
   #### 4.2.2 [XGboost](#xgboost)
   #### 4.2.3 [pycaret_RF](#pycaret_rf)
   #### 4.2.4 [pycaret_xgboost](#pycaret_xgboost)
